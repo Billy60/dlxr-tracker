@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -168,19 +169,30 @@
 
     /* ── LEAFLET CUSTOM MARKER ── */
     .drone-marker {
-      width: 36px;
-      height: 36px;
-      background: var(--accent);
-      border: 3px solid white;
-      border-radius: 50%;
-      box-shadow: 0 0 12px var(--accent), 0 0 24px rgba(0,212,255,0.4);
-      animation: pulse 1.5s infinite;
+      width: 16px;
+      height: 16px;
+      position: relative;
     }
-
-    @keyframes pulse {
-      0%   { box-shadow: 0 0 8px var(--accent); }
-      50%  { box-shadow: 0 0 20px var(--accent), 0 0 40px rgba(0,212,255,0.5); }
-      100% { box-shadow: 0 0 8px var(--accent); }
+    .drone-marker::before,
+    .drone-marker::after {
+      content: '';
+      position: absolute;
+      background: #00d4ff;
+    }
+    .drone-marker::before {
+      width: 16px; height: 2px;
+      top: 7px; left: 0;
+    }
+    .drone-marker::after {
+      width: 2px; height: 16px;
+      top: 0; left: 7px;
+    }
+    .drone-dot {
+      position: absolute;
+      width: 4px; height: 4px;
+      background: #ff6b35;
+      border-radius: 50%;
+      top: 6px; left: 6px;
     }
 
     /* Leaflet dark theme */
@@ -285,9 +297,9 @@
     // ── Marker drone custom ──
     const droneIcon = L.divIcon({
       className: '',
-      html: '<div class="drone-marker"></div>',
-      iconSize: [36, 36],
-      iconAnchor: [18, 18]
+      html: '<div class="drone-marker"><div class="drone-dot"></div></div>',
+      iconSize: [16, 16],
+      iconAnchor: [8, 8]
     });
 
     function updateMap(lat, lon) {
@@ -349,15 +361,21 @@
           : `${(dist / 1000).toFixed(2)} km`;
         document.getElementById('m-rx').textContent   = rxCount;
 
-        if (etat === 'GROUND' && lat === 0 && lon === 0) {
-          document.getElementById('m-pos').textContent = 'AU SOL — pas de déplacement';
-          setStatus('DRONE AU SOL — SIGNAL REÇU');
-        } else if (lat !== 0 && lon !== 0) {
+        const moved = d.moved !== false;  // true par défaut si absent
+
+        if (lat !== 0 && lon !== 0) {
           lastLat = lat;
           lastLon = lon;
           document.getElementById('m-pos').textContent =
             `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
-          updateMap(lat, lon);
+        }
+
+        if (etat === 'GROUND' && !moved) {
+          document.getElementById('m-pos').textContent =
+            `AU SOL — ${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+          setStatus(`DRONE AU SOL — TRAME #${rxCount}`);
+        } else {
+          if (lat !== 0 && lon !== 0) updateMap(lat, lon);
           setStatus(`TRAME #${rxCount} — ${etat}`);
         }
 
