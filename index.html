@@ -21,70 +21,135 @@
       --mono:      'Share Tech Mono', monospace;
       --sans:      'Exo 2', sans-serif;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background: var(--bg); color: var(--text);
-      font-family: var(--sans); height: 100dvh;
-      display: flex; flex-direction: column; overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
+
     header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 16px; background: var(--panel);
-      border-bottom: 1px solid var(--border); z-index: 1000; flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      flex-shrink: 0;
     }
-    .logo { font-family: var(--mono); font-size: 1.1rem; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
     .logo span { color: var(--accent2); }
+
     #ble-btn {
-      background: transparent; border: 1.5px solid var(--accent);
-      color: var(--accent); font-family: var(--mono); font-size: 0.75rem;
-      padding: 6px 14px; border-radius: 4px; cursor: pointer; letter-spacing: 1px; transition: all 0.2s;
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.2s;
     }
     #ble-btn:hover { background: var(--accent); color: var(--bg); }
     #ble-btn.connected { border-color: var(--green); color: var(--green); }
     #ble-btn.connected:hover { background: var(--green); color: var(--bg); }
+
     #map { flex: 1; width: 100%; z-index: 1; }
+
     #panel {
-      background: var(--panel); border-top: 1px solid var(--border);
-      padding: 8px 16px 12px; flex-shrink: 0; z-index: 1000;
-      max-height: 45vh; overflow-y: auto;
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      padding: 8px 16px 12px;
+      flex-shrink: 0;
+      z-index: 1000;
     }
-    /* Liste drones */
-    #drones-list { display: flex; flex-direction: column; gap: 6px; }
-    .drone-card {
-      background: var(--bg); border-radius: 6px; padding: 8px 10px;
-      border-left: 4px solid var(--accent);
-      display: grid; grid-template-columns: auto 1fr 1fr 1fr;
-      gap: 4px 10px; align-items: center;
-    }
-    .drone-id {
-      font-family: var(--mono); font-size: 0.9rem; font-weight: bold;
-      grid-row: 1 / 3;
-    }
-    .drone-label { font-size: 0.55rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-    .drone-val { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); }
-    .drone-badge {
-      font-family: var(--mono); font-size: 0.6rem; font-weight: 600;
-      padding: 2px 6px; border-radius: 3px; background: var(--muted);
-      color: var(--bg); letter-spacing: 2px;
-    }
-    .drone-badge.BOOT   { background: var(--yellow); }
-    .drone-badge.LOW    { background: var(--accent); }
-    .drone-badge.HIGH   { background: var(--green); }
-    .drone-badge.GROUND { background: var(--accent2); }
 
-    /* Barre du bas */
-    #bottom-bar {
-      display: flex; align-items: center; justify-content: space-between;
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .info-row:last-of-type { border-bottom: none; }
+
+    .info-label {
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .info-item {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .info-item.accent { color: var(--accent); }
+    .info-item.muted  { color: var(--muted); }
+    .info-item.yellow { color: var(--yellow); }
+
+    .state-badge {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 3px;
+      letter-spacing: 2px;
+      background: var(--muted);
+      color: var(--bg);
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .state-badge.BOOT   { background: var(--yellow); }
+    .state-badge.LOW    { background: var(--accent); }
+    .state-badge.HIGH   { background: var(--green); }
+    .state-badge.GROUND { background: var(--accent2); }
+
+    #status {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-align: center;
       margin-top: 8px;
+      letter-spacing: 1px;
     }
-    #status { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); letter-spacing: 1px; }
-    #m-mypos { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); }
-    #m-id { font-family: var(--mono); font-size: 0.6rem; color: var(--yellow); }
 
-    /* Marqueur utilisateur */
+    /* Marqueur drone — viseur cyan */
+    .drone-marker {
+      width: 16px; height: 16px; position: relative;
+    }
+    .drone-marker::before, .drone-marker::after {
+      content: ''; position: absolute; background: #00d4ff;
+    }
+    .drone-marker::before { width: 16px; height: 2px; top: 7px; left: 0; }
+    .drone-marker::after  { width: 2px; height: 16px; top: 0; left: 7px; }
+    .drone-dot {
+      position: absolute; width: 4px; height: 4px;
+      background: #ff6b35; border-radius: 50%; top: 6px; left: 6px;
+    }
+
+    /* Marqueur pilote — point bleu pulsant */
     .user-marker {
-      width: 14px; height: 14px; background: #4a90ff;
-      border: 2px solid white; border-radius: 50%;
+      width: 14px; height: 14px;
+      background: #4a90ff; border: 2px solid white; border-radius: 50%;
       box-shadow: 0 0 8px rgba(74,144,255,0.8);
       animation: userpulse 2s infinite;
     }
@@ -93,34 +158,63 @@
       50%  { box-shadow: 0 0 14px rgba(74,144,255,1); }
       100% { box-shadow: 0 0 4px rgba(74,144,255,0.8); }
     }
+
     .leaflet-tile { filter: brightness(0.85) saturate(0.7) hue-rotate(180deg) invert(1); }
     .leaflet-container { background: #0a0e1a; }
+
     #center-btn {
-      position: absolute; bottom: 55vh; right: 16px; z-index: 999;
-      background: var(--panel); border: 1.5px solid var(--border);
-      color: var(--accent); width: 40px; height: 40px;
-      border-radius: 8px; font-size: 1.1rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      position: absolute;
+      bottom: 260px;
+      right: 16px;
+      z-index: 999;
+      background: var(--panel);
+      border: 1.5px solid var(--border);
+      color: var(--accent);
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
+
   <header>
     <div class="logo">DL<span>X</span>R</div>
     <button id="ble-btn" onclick="connectBLE()">⚡ CONNECTER</button>
   </header>
+
   <div id="map"></div>
-  <button id="center-btn" onclick="centerMap()" title="Centrer">🎯</button>
+  <button id="center-btn" onclick="centerMap()" title="Centrer sur le drone">🎯</button>
+
   <div id="panel">
-    <div id="drones-list"></div>
-    <div id="bottom-bar">
-      <div id="status">EN ATTENTE DE CONNEXION BLE</div>
+    <!-- Ligne 1 : État transmission -->
+    <div class="info-row">
+      <span id="state-badge" class="state-badge">--</span>
+      <span class="info-item" id="m-rssi">RSSI: --</span>
+      <span class="info-item accent" id="m-alt">Altitude modèle: -- m</span>
+      <span class="info-item" id="m-rx">Trames reçues: 0</span>
     </div>
-    <div style="font-family:var(--mono);font-size:0.6rem;margin-top:4px;">
-      <span style="color:var(--muted);letter-spacing:1px;text-transform:uppercase;">🪪 ID Alpha Tango : </span>
-      <span id="m-id" style="color:var(--yellow)">--</span>
+    <!-- Ligne 2 : Position modèle -->
+    <div class="info-row">
+      <span class="info-label">Position modèle</span>
+      <span class="info-item accent" id="m-pos">Attente signal...</span>
+      <span class="info-item accent" id="m-dist">-- m</span>
     </div>
-    <div id="m-mypos"></div>
+    <!-- Ligne 3 : Ma position -->
+    <div class="info-row">
+      <span class="info-label">Home</span>
+      <span class="info-item muted" id="m-mypos">Localisation...</span>
+    </div>
+    <!-- Ligne 4 : ID Alpha Tango -->
+    <div class="info-row">
+      <span class="info-label">ID DGAC</span>
+      <span class="info-item yellow" id="m-id">--</span>
+    </div>
+    <div id="status">EN ATTENTE DE CONNEXION BLE</div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -128,17 +222,11 @@
     const SERVICE_UUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
     const CHARACT_UUID = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
 
-    // Couleurs pour chaque drone (jusqu'à 5)
-    const DRONE_COLORS = ['#00d4ff', '#00ff9d', '#ffd700', '#ff6b35', '#ff3b5c'];
-
-    // État multi-drones
-    const drones = {};  // { id: { lat, lon, dist, alt, etat, rssi, marker, polyline, path, color, linkLine } }
-    let droneColorIndex = 0;
-
     let bleDevice = null, bleCharact = null;
-    let userMarker = null, myLat = null, myLon = null;
-    let autoCenter = true;
-    let rxCount = 0;
+    let rxCount = 0, droneMarker = null, userMarker = null;
+    let tracePath = [], polyline = null, linkLine = null;
+    let autoCenter = true, lastLat = null, lastLon = null;
+    let myLat = null, myLon = null;
 
     const map = L.map('map', { center: [48.8566, 2.3522], zoom: 15, zoomControl: false });
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -147,137 +235,18 @@
     L.control.zoom({ position: 'topleft' }).addTo(map);
     map.on('dragstart', () => { autoCenter = false; });
 
+    const droneIcon = L.divIcon({
+      className: '',
+      html: '<div class="drone-marker"><div class="drone-dot"></div></div>',
+      iconSize: [16, 16], iconAnchor: [8, 8]
+    });
+
     const userIcon = L.divIcon({
-      className: '', html: '<div class="user-marker"></div>',
+      className: '',
+      html: '<div class="user-marker"></div>',
       iconSize: [14, 14], iconAnchor: [7, 7]
     });
 
-    function getDroneIcon(color, id) {
-      return L.divIcon({
-        className: '',
-        html: `<div style="
-          width:28px;height:28px;border-radius:50%;
-          background:${color};border:2px solid white;
-          display:flex;align-items:center;justify-content:center;
-          font-family:monospace;font-size:9px;font-weight:bold;color:#000;
-          box-shadow:0 0 8px ${color}88;">
-          ${id}
-        </div>`,
-        iconSize: [28, 28], iconAnchor: [14, 14]
-      });
-    }
-
-    function getOrCreateDrone(id) {
-      if (!drones[id]) {
-        const color = DRONE_COLORS[droneColorIndex % DRONE_COLORS.length];
-        droneColorIndex++;
-        drones[id] = { lat: 0, lon: 0, dist: 0, alt: 0, etat: '--', rssi: 0,
-                       marker: null, polyline: null, path: [], linkLine: null, color };
-        // Créer la carte du drone dans le panel
-        const list = document.getElementById('drones-list');
-        const card = document.createElement('div');
-        card.className = 'drone-card';
-        card.id = `card-${id}`;
-        card.style.borderLeftColor = color;
-        card.innerHTML = `
-          <div class="drone-id" style="color:${color}">${id}</div>
-          <div><div class="drone-label">Altitude</div><div class="drone-val" id="alt-${id}">-- m</div></div>
-          <div><div class="drone-label">Distance</div><div class="drone-val" id="dist-${id}">-- m</div></div>
-          <div><span class="drone-badge" id="badge-${id}">--</span></div>
-          <div><div class="drone-label">RSSI</div><div class="drone-val" id="rssi-${id}">--</div></div>
-          <div><div class="drone-label">Position</div><div class="drone-val" id="pos-${id}" style="font-size:0.7rem">--</div></div>
-        `;
-        list.appendChild(card);
-      }
-      return drones[id];
-    }
-
-    function updateDroneMap(id, lat, lon) {
-      const d = drones[id];
-      const latlng = [lat, lon];
-
-      if (!d.marker) {
-        d.marker = L.marker(latlng, { icon: getDroneIcon(d.color, id) })
-          .bindTooltip(id, { permanent: false, direction: 'top' })
-          .addTo(map);
-        map.setView(latlng, 16);
-      } else {
-        d.marker.setLatLng(latlng);
-      }
-
-      d.path.push(latlng);
-      if (d.polyline) {
-        d.polyline.setLatLngs(d.path);
-      } else {
-        d.polyline = L.polyline(d.path, {
-          color: d.color, weight: 2, opacity: 0.6, dashArray: '4 6'
-        }).addTo(map);
-      }
-
-      // Ligne vers pilote
-      if (myLat !== null) {
-        const pts = [[myLat, myLon], [lat, lon]];
-        if (d.linkLine) {
-          d.linkLine.setLatLngs(pts);
-        } else {
-          d.linkLine = L.polyline(pts, {
-            color: d.color, weight: 1, opacity: 0.4, dashArray: '4 8'
-          }).addTo(map);
-        }
-      }
-
-      if (autoCenter) map.panTo(latlng);
-    }
-
-    function handleData(json) {
-      try {
-        const d = JSON.parse(json);
-
-        // Trame indicatif
-        if (d.id !== undefined) {
-          document.getElementById('m-id').textContent = '🪪 ' + d.id;
-          setStatus('INDICATIF : ' + d.id);
-          return;
-        }
-
-        if (!d.did) return;
-        rxCount++;
-
-        const id   = d.did;
-        const lat  = parseFloat(d.lat  || 0);
-        const lon  = parseFloat(d.lon  || 0);
-        const alt  = parseFloat(d.alt  || 0).toFixed(0);
-        const dist = parseFloat(d.dist || 0);
-        const etat = (d.etat || '--').toUpperCase();
-        const rssi = parseFloat(d.rssi || 0).toFixed(0);
-
-        getOrCreateDrone(id);
-
-        // Mise à jour panel
-        const badge = document.getElementById(`badge-${id}`);
-        if (badge) { badge.textContent = etat; badge.className = `drone-badge ${etat}`; }
-        const altEl = document.getElementById(`alt-${id}`);
-        if (altEl) altEl.textContent = `${alt} m`;
-        const distEl = document.getElementById(`dist-${id}`);
-        if (distEl) distEl.textContent = dist < 1000 ? `${dist.toFixed(0)} m` : `${(dist/1000).toFixed(2)} km`;
-        const rssiEl = document.getElementById(`rssi-${id}`);
-        if (rssiEl) rssiEl.textContent = `${rssi} dBm`;
-        const posEl = document.getElementById(`pos-${id}`);
-        if (posEl && lat !== 0) posEl.textContent = `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
-
-        if (lat !== 0 && lon !== 0) {
-          drones[id].lat = lat; drones[id].lon = lon;
-          updateDroneMap(id, lat, lon);
-        }
-
-        setStatus(`RX #${rxCount} — ${id} ${etat}`);
-
-      } catch(e) {
-        console.error('Parse JSON erreur:', e, json);
-      }
-    }
-
-    // Géolocalisation
     function startGeolocation() {
       if (!navigator.geolocation) return;
       navigator.geolocation.watchPosition(pos => {
@@ -287,33 +256,111 @@
           userMarker = L.marker([myLat, myLon], { icon: userIcon })
             .bindTooltip('📍 Moi', { permanent: false, direction: 'top' })
             .addTo(map);
-          map.setView([myLat, myLon], 15);
         } else {
           userMarker.setLatLng([myLat, myLon]);
         }
-        document.getElementById('m-mypos').textContent = `📍 ${myLat.toFixed(6)}, ${myLon.toFixed(6)}`;
-        // Mise à jour des lignes
-        Object.keys(drones).forEach(id => {
-          const d = drones[id];
-          if (d.lat !== 0) {
-            const pts = [[myLat, myLon], [d.lat, d.lon]];
-            if (d.linkLine) d.linkLine.setLatLngs(pts);
-          }
-        });
-      }, err => {}, { enableHighAccuracy: true, maximumAge: 2000 });
+        document.getElementById('m-mypos').textContent =
+          `${myLat.toFixed(6)}, ${myLon.toFixed(6)}`;
+        updateLinkLine();
+      }, () => {}, { enableHighAccuracy: true, maximumAge: 2000 });
+    }
+
+    function updateLinkLine() {
+      if (myLat === null || lastLat === null) return;
+      const pts = [[myLat, myLon], [lastLat, lastLon]];
+      if (linkLine) {
+        linkLine.setLatLngs(pts);
+      } else {
+        linkLine = L.polyline(pts, {
+          color: '#ffd700', weight: 1, opacity: 0.5, dashArray: '4 8'
+        }).addTo(map);
+      }
+    }
+
+    function updateMap(lat, lon) {
+      const latlng = [lat, lon];
+      if (!droneMarker) {
+        droneMarker = L.marker(latlng, { icon: droneIcon })
+          .bindTooltip('🎯 Drone', { permanent: false, direction: 'top' })
+          .addTo(map);
+        map.setView(latlng, 16);
+      } else {
+        droneMarker.setLatLng(latlng);
+      }
+      tracePath.push(latlng);
+      if (polyline) {
+        polyline.setLatLngs(tracePath);
+      } else {
+        polyline = L.polyline(tracePath, {
+          color: '#00d4ff', weight: 2, opacity: 0.6, dashArray: '4 6'
+        }).addTo(map);
+      }
+      if (autoCenter) map.panTo(latlng);
+      updateLinkLine();
     }
 
     function centerMap() {
       autoCenter = true;
-      const ids = Object.keys(drones);
-      if (ids.length > 0) {
-        const last = drones[ids[ids.length - 1]];
-        if (last.lat !== 0) map.setView([last.lat, last.lon], 16);
+      if (lastLat !== null) map.setView([lastLat, lastLon], 16);
+    }
+
+    function handleData(json) {
+      try {
+        const d = JSON.parse(json);
+
+        // Trame indicatif Alpha Tango
+        if (d.id !== undefined) {
+          document.getElementById('m-id').textContent = d.id;
+          setStatus('ID ALPHA TANGO REÇU');
+          return;
+        }
+
+        rxCount++;
+        const etat = (d.etat || '--').toUpperCase();
+        const alt  = parseFloat(d.alt  || 0).toFixed(0);
+        const dist = parseFloat(d.dist || 0);
+        const rssi = parseFloat(d.rssi || 0).toFixed(0);
+        const lat  = parseFloat(d.lat  || 0);
+        const lon  = parseFloat(d.lon  || 0);
+        const moved = d.moved !== false;
+
+        const badge = document.getElementById('state-badge');
+        badge.textContent = etat;
+        badge.className   = 'state-badge ' + etat;
+
+        document.getElementById('m-rssi').textContent = `RSSI: ${rssi} dBm`;
+        document.getElementById('m-alt').textContent  = `Altitude modèle: ${alt} m`;
+        document.getElementById('m-dist').textContent = dist < 1000
+          ? `${dist.toFixed(0)} m`
+          : `${(dist / 1000).toFixed(2)} km`;
+        document.getElementById('m-rx').textContent = `Trames reçues: ${rxCount}`;
+
+        if (lat !== 0 && lon !== 0) {
+          lastLat = lat;
+          lastLon = lon;
+          document.getElementById('m-pos').textContent =
+            `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+        }
+
+        if (etat === 'GROUND' && !moved) {
+          document.getElementById('m-pos').textContent =
+            `AU SOL — ${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+          setStatus(`DRONE AU SOL — TRAME #${rxCount}`);
+        } else {
+          if (lat !== 0 && lon !== 0) updateMap(lat, lon);
+          setStatus(`TRAME #${rxCount} — ${etat}`);
+        }
+
+      } catch(e) {
+        setStatus('ERREUR PARSING JSON');
       }
     }
 
     async function connectBLE() {
-      if (!navigator.bluetooth) { setStatus('WEB BLUETOOTH NON SUPPORTÉ — UTILISE CHROME'); return; }
+      if (!navigator.bluetooth) {
+        setStatus('WEB BLUETOOTH NON SUPPORTÉ — UTILISE CHROME');
+        return;
+      }
       try {
         setStatus('RECHERCHE DLXR_RX...');
         bleDevice = await navigator.bluetooth.requestDevice({
@@ -331,18 +378,24 @@
           handleData(new TextDecoder().decode(e.target.value));
         });
         const btn = document.getElementById('ble-btn');
-        btn.textContent = '✓ CONNECTÉ'; btn.classList.add('connected');
+        btn.textContent = '✓ CONNECTÉ';
+        btn.classList.add('connected');
         setStatus('BLE CONNECTÉ — EN ÉCOUTE');
-      } catch(e) { setStatus('ERREUR BLE: ' + e.message); }
+      } catch(e) {
+        setStatus('ERREUR BLE: ' + e.message);
+      }
     }
 
     function onDisconnected() {
       const btn = document.getElementById('ble-btn');
-      btn.textContent = '⚡ CONNECTER'; btn.classList.remove('connected');
-      setStatus('BLE DÉCONNECTÉ');
+      btn.textContent = '⚡ CONNECTER';
+      btn.classList.remove('connected');
+      setStatus('BLE DÉCONNECTÉ — APPUIE POUR RECONNECTER');
     }
 
-    function setStatus(msg) { document.getElementById('status').textContent = msg; }
+    function setStatus(msg) {
+      document.getElementById('status').textContent = msg;
+    }
 
     startGeolocation();
   </script>
