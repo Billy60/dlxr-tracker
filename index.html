@@ -256,6 +256,7 @@
           userMarker = L.marker([myLat, myLon], { icon: userIcon })
             .bindTooltip('📍 Moi', { permanent: false, direction: 'top' })
             .addTo(map);
+          map.setView([myLat, myLon], 15);  // ← centrage sur le pilote au démarrage
         } else {
           userMarker.setLatLng([myLat, myLon]);
         }
