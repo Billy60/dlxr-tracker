@@ -195,14 +195,14 @@
     <div class="info-row">
       <span id="state-badge" class="state-badge">--</span>
       <span class="info-item" id="m-rssi">RSSI: --</span>
-      <span class="info-item accent" id="m-alt">Altitude modèle: -- m</span>
+      <span class="info-item accent" id="m-alt">Alt modele: -- m</span>
+      <span class="info-item accent" id="m-dist">Distance: -- m</span>
       <span class="info-item" id="m-rx">Trames reçues: 0</span>
     </div>
     <!-- Ligne 2 : Position modèle -->
     <div class="info-row">
       <span class="info-label">Position modèle</span>
       <span class="info-item accent" id="m-pos">Attente signal...</span>
-      <span class="info-item accent" id="m-dist">-- m</span>
     </div>
     <!-- Ligne 3 : Ma position -->
     <div class="info-row">
@@ -330,10 +330,10 @@
         badge.className   = 'state-badge ' + etat;
 
         document.getElementById('m-rssi').textContent = `RSSI: ${rssi} dBm`;
-        document.getElementById('m-alt').textContent  = `Altitude modèle: ${alt} m`;
+        document.getElementById('m-alt').textContent  = `Alt modele: ${alt} m`;
         document.getElementById('m-dist').textContent = dist < 1000
-          ? `${dist.toFixed(0)} m`
-          : `${(dist / 1000).toFixed(2)} km`;
+          ? `Distance: ${dist.toFixed(0)} m`
+          : `Distance: ${(dist / 1000).toFixed(2)} km`;
         document.getElementById('m-rx').textContent = `Trames reçues: ${rxCount}`;
 
         if (lat !== 0 && lon !== 0) {
