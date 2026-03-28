@@ -195,9 +195,9 @@
     <div class="info-row">
       <span id="state-badge" class="state-badge">--</span>
       <span class="info-item" id="m-rssi">RSSI: --</span>
-      <span class="info-item accent" id="m-alt">Alt modele: -- m</span>
-      <span class="info-item accent" id="m-dist">Distance: -- m</span>
-      <span class="info-item" id="m-rx">Trames reçues: 0</span>
+      <span class="info-item accent" id="m-alt">Alt Mod.: -- m</span>
+      <span class="info-item accent" id="m-dist">Dist Sol: -- m</span>
+      <span class="info-item" id="m-rx">#0</span>
     </div>
     <!-- Ligne 2 : Position modèle -->
     <div class="info-row">
@@ -330,11 +330,11 @@
         badge.className   = 'state-badge ' + etat;
 
         document.getElementById('m-rssi').textContent = `RSSI: ${rssi} dBm`;
-        document.getElementById('m-alt').textContent  = `Alt modele: ${alt} m`;
+        document.getElementById('m-alt').textContent  = `Alt Mod.: ${alt} m`;
         document.getElementById('m-dist').textContent = dist < 1000
-          ? `Distance: ${dist.toFixed(0)} m`
-          : `Distance: ${(dist / 1000).toFixed(2)} km`;
-        document.getElementById('m-rx').textContent = `Trames reçues: ${rxCount}`;
+          ? `Dist Sol: ${dist.toFixed(0)} m`
+          : `Dist Sol: ${(dist / 1000).toFixed(2)} km`;
+        document.getElementById('m-rx').textContent = `#${rxCount}`;
 
         if (lat !== 0 && lon !== 0) {
           lastLat = lat;
