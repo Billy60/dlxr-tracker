@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>DLXR Tracker V2</title>
+  <title>DLXR Tracker V3</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;600;800&display=swap" rel="stylesheet" />
   <style>
@@ -183,7 +183,7 @@
 <body>
 
   <header>
-    <div class="logo">DL<span>X</span>R V2</div>
+    <div class="logo">DL<span>X</span>R V3</div>
     <button id="ble-btn" onclick="connectBLE()">⚡ CONNECTER</button>
   </header>
 
@@ -194,9 +194,9 @@
     <!-- Ligne 1 : État transmission -->
     <div class="info-row">
       <span id="state-badge" class="state-badge">--</span>
-      <span class="info-item" id="m-rssi">RSSI: --</span>
-      <span class="info-item accent" id="m-alt">Altitude modèle: -- m</span>
-      <span class="info-item" id="m-rx">Trames reçues: 0</span>
+      <span class="info-item" id="m-rssi">RS:--</span>
+      <span class="info-item accent" id="m-alt">Alt: -- m</span>
+      <span class="info-item" id="m-rx">Tr: 0</span>
     </div>
     <!-- Ligne 2 : Position modèle -->
     <div class="info-row">
@@ -329,12 +329,12 @@
         badge.textContent = etat;
         badge.className   = 'state-badge ' + etat;
 
-        document.getElementById('m-rssi').textContent = `RSSI: ${rssi} dBm`;
-        document.getElementById('m-alt').textContent  = `Altitude modèle: ${alt} m`;
+        document.getElementById('m-rssi').textContent = `RS:${rssi}`;
+        document.getElementById('m-alt').textContent  = `Alt: ${alt}m`;
         document.getElementById('m-dist').textContent = dist < 1000
           ? `${dist.toFixed(0)} m`
           : `${(dist / 1000).toFixed(2)} km`;
-        document.getElementById('m-rx').textContent = `Trames reçues: ${rxCount}`;
+        document.getElementById('m-rx').textContent = `Tr: ${rxCount}`;
 
         if (lat !== 0 && lon !== 0) {
           lastLat = lat;
