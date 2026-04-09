@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>DLXR Tracker V5</title>
+  <title>DLXR Tracker V6</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;600;800&display=swap" rel="stylesheet" />
   <style>
@@ -75,7 +75,7 @@
     #panel {
       background: var(--panel);
       border-top: 1px solid var(--border);
-      padding: 8px 16px 12px;
+      padding: 6px 16px 10px;
       flex-shrink: 0;
       z-index: 1000;
     }
@@ -83,15 +83,17 @@
     .info-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 5px 0;
+      gap: 8px;
+      padding: 4px 0;
       border-bottom: 1px solid var(--border);
     }
     .info-row:last-of-type { border-bottom: none; }
 
     .info-label {
-      font-size: 0.9rem;
+      font-size: 0.78rem;
+      color: var(--muted);
       flex-shrink: 0;
+      min-width: 40px;
     }
 
     .info-item {
@@ -105,6 +107,8 @@
     .info-item.accent { color: var(--accent); }
     .info-item.muted  { color: var(--muted); }
     .info-item.yellow { color: var(--yellow); }
+    .info-item.green  { color: var(--green); }
+    .info-item.orange { color: var(--accent2); }
 
     .state-badge {
       font-family: var(--mono);
@@ -125,17 +129,14 @@
 
     #status {
       font-family: var(--mono);
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       color: var(--muted);
       text-align: center;
-      margin-top: 8px;
+      margin-top: 6px;
       letter-spacing: 1px;
     }
 
-    /* Marqueur drone — viseur cyan */
-    .drone-marker {
-      width: 16px; height: 16px; position: relative;
-    }
+    .drone-marker { width: 16px; height: 16px; position: relative; }
     .drone-marker::before, .drone-marker::after {
       content: ''; position: absolute; background: #00d4ff;
     }
@@ -146,7 +147,6 @@
       background: #ff6b35; border-radius: 50%; top: 6px; left: 6px;
     }
 
-    /* Marqueur pilote — point bleu pulsant */
     .user-marker {
       width: 14px; height: 14px;
       background: #4a90ff; border: 2px solid white; border-radius: 50%;
@@ -164,7 +164,7 @@
 
     #center-btn {
       position: absolute;
-      bottom: 260px;
+      bottom: 220px;
       right: 16px;
       z-index: 999;
       background: var(--panel);
@@ -183,7 +183,7 @@
 <body>
 
   <header>
-    <div class="logo">DL<span>X</span>R V5</div>
+    <div class="logo">DL<span>X</span>R V6</div>
     <button id="ble-btn" onclick="connectBLE()">⚡ CONNECTER</button>
   </header>
 
@@ -191,29 +191,35 @@
   <button id="center-btn" onclick="centerMap()" title="Centrer sur le drone">🎯</button>
 
   <div id="panel">
-    <!-- Ligne 1 : État transmission -->
+
+    <!-- Ligne 1 : état + alt GPS + alt baro + vbat + compteur -->
     <div class="info-row">
       <span id="state-badge" class="state-badge">--</span>
-      <span class="info-item" id="m-rssi">RSSI:--</span>
-      <span class="info-item accent" id="m-alt">Alt.sol: -- m</span>
-      <span class="info-item" id="m-rx">Tr.reçues:0</span>
+      <span class="info-item accent" id="m-alt">Alt:--m</span>
+      <span class="info-item green"  id="m-abaro">Baro:--m</span>
+      <span class="info-item orange" id="m-vbat">Bat:--V</span>
+      <span class="info-item muted"  id="m-rx">#0</span>
     </div>
-    <!-- Ligne 2 : Position modèle -->
+
+    <!-- Ligne 2 : position modèle + distance -->
     <div class="info-row">
-      <span class="info-label">Pos. Modèle</span>
+      <span class="info-label">Modèle</span>
       <span class="info-item accent" id="m-pos">Attente signal...</span>
-      <span class="info-item accent" id="m-dist">-- m</span>
+      <span class="info-item accent" id="m-dist">--m</span>
     </div>
-    <!-- Ligne 3 : Ma position -->
+
+    <!-- Ligne 3 : ma position -->
     <div class="info-row">
       <span class="info-label">Home</span>
       <span class="info-item muted" id="m-mypos">Localisation...</span>
     </div>
-    <!-- Ligne 4 : ID Alpha Tango -->
+
+    <!-- Ligne 4 : ID DGAC -->
     <div class="info-row">
-      <span class="info-label">ID DGAC</span>
+      <span class="info-label">DGAC</span>
       <span class="info-item yellow" id="m-id">--</span>
     </div>
+
     <div id="status">EN ATTENTE DE CONNEXION BLE</div>
   </div>
 
@@ -256,7 +262,7 @@
           userMarker = L.marker([myLat, myLon], { icon: userIcon })
             .bindTooltip('📍 Moi', { permanent: false, direction: 'top' })
             .addTo(map);
-          map.setView([myLat, myLon], 15);  // ← centrage sur le pilote au démarrage
+          map.setView([myLat, myLon], 15);
         } else {
           userMarker.setLatLng([myLat, myLon]);
         }
@@ -317,25 +323,32 @@
         }
 
         rxCount++;
-        const etat = (d.etat || '--').toUpperCase();
-        const alt  = Math.max(0, parseFloat(d.alt  || 0)).toFixed(0);
-        const dist = parseFloat(d.dist || 0);
-        const rssi = parseFloat(d.rssi || 0).toFixed(0);
-        const lat  = parseFloat(d.lat  || 0);
-        const lon  = parseFloat(d.lon  || 0);
+        const etat  = (d.etat  || '--').toUpperCase();
+        const alt   = Math.max(0, parseFloat(d.alt   || 0)).toFixed(0);
+        const abaro = parseFloat(d.abaro || 0);
+        const vbat  = parseFloat(d.vbat  || 0);
+        const dist  = parseFloat(d.dist  || 0);
+        const lat   = parseFloat(d.lat   || 0);
+        const lon   = parseFloat(d.lon   || 0);
         const moved = d.moved !== false;
 
+        // Badge état
         const badge = document.getElementById('state-badge');
         badge.textContent = etat;
         badge.className   = 'state-badge ' + etat;
 
-        document.getElementById('m-rssi').textContent = `RSSI:${rssi}`;
-        document.getElementById('m-alt').textContent  = `Alt.sol:${alt}m`;
-        document.getElementById('m-dist').textContent = dist < 1000
-          ? `${dist.toFixed(0)} m`
-          : `${(dist / 1000).toFixed(2)} km`;
-        document.getElementById('m-rx').textContent = `Tr.reçues:${rxCount}`;
+        // Ligne 1
+        document.getElementById('m-alt').textContent   = `Alt:${alt}m`;
+        document.getElementById('m-abaro').textContent = abaro > 0 ? `Baro:${abaro.toFixed(0)}m` : 'Baro:--';
+        document.getElementById('m-vbat').textContent  = vbat  > 0 ? `Bat:${vbat.toFixed(2)}V`   : 'Bat:--';
+        document.getElementById('m-rx').textContent    = `#${rxCount}`;
 
+        // Distance
+        document.getElementById('m-dist').textContent = dist < 1000
+          ? `${dist.toFixed(0)}m`
+          : `${(dist / 1000).toFixed(2)}km`;
+
+        // Position
         if (lat !== 0 && lon !== 0) {
           lastLat = lat;
           lastLon = lon;
