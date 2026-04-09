@@ -192,13 +192,13 @@
 
   <div id="panel">
 
-    <!-- Ligne 1 : état + alt GPS + alt baro + vbat + compteur -->
+    <!-- Ligne 1 : état + RSSI + alt GPS + alt baro + vbat -->
     <div class="info-row">
       <span id="state-badge" class="state-badge">--</span>
+      <span class="info-item muted"  id="m-rssi">RSSI:--</span>
       <span class="info-item accent" id="m-alt">Alt:--m</span>
       <span class="info-item green"  id="m-abaro">Baro:--m</span>
       <span class="info-item orange" id="m-vbat">Bat:--V</span>
-      <span class="info-item muted"  id="m-rx">#0</span>
     </div>
 
     <!-- Ligne 2 : position modèle + distance -->
@@ -338,10 +338,11 @@
         badge.className   = 'state-badge ' + etat;
 
         // Ligne 1
+        const rssi = parseFloat(d.rssi || 0).toFixed(0);
+        document.getElementById('m-rssi').textContent  = `RSSI:${rssi}`;
         document.getElementById('m-alt').textContent   = `Alt:${alt}m`;
         document.getElementById('m-abaro').textContent = abaro > 0 ? `Baro:${abaro.toFixed(0)}m` : 'Baro:--';
         document.getElementById('m-vbat').textContent  = vbat  > 0 ? `Bat:${vbat.toFixed(2)}V`   : 'Bat:--';
-        document.getElementById('m-rx').textContent    = `#${rxCount}`;
 
         // Distance
         document.getElementById('m-dist').textContent = dist < 1000
