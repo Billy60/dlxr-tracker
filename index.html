@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>DLXR Tracker V7</title>
+  <title>DLXR Tracker V8</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;600;800&display=swap" rel="stylesheet" />
   <style>
@@ -183,7 +183,7 @@
 <body>
 
   <header>
-    <div class="logo">DL<span>X</span>R V7</div>
+    <div class="logo">DL<span>X</span>R V8</div>
     <button id="ble-btn" onclick="connectBLE()">⚡ CONNECTER</button>
   </header>
 
@@ -323,7 +323,7 @@
         }
 
         rxCount++;
-        const etat  = (d.etat  || '--').toUpperCase();
+        const etat  = (d.etat  || '--').toUpperCase().split(',')[0].trim();
         const alt   = Math.max(0, parseFloat(d.alt   || 0)).toFixed(0);
         const abaro = parseFloat(d.abaro || 0);
         const vbat  = parseFloat(d.vbat  || 0);
